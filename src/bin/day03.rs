@@ -9,6 +9,27 @@ fn main() {
     let second = lines.next().unwrap();
 
     println!("part 1: {}", distance(first, second));
+    println!("part 2: {}", minimal(first, second));
+}
+
+fn minimal(a: &str, b: &str) -> usize {
+    let coords_a = coords(a);
+    let coords_b = coords(b);
+
+    let set_a: HashSet<_> = coords_a.iter().collect();
+    let set_b: HashSet<_> = coords_b.iter().collect();
+
+    let crosses = set_a.intersection(&set_b);
+
+    crosses
+        .filter(|(x, y)| *x != 0 && *y != 0)
+        .map(|&cross| {
+            let first = coords_a.iter().position(|c| c == cross).unwrap();
+            let second = coords_b.iter().position(|c| c == cross).unwrap();
+            first + second
+        })
+        .min()
+        .unwrap()
 }
 
 fn distance(a: &str, b: &str) -> i32 {
@@ -34,6 +55,7 @@ fn coords(ops: &str) -> Vec<(i32, i32)> {
     let mut result = Vec::new();
     let mut x = 0;
     let mut y = 0;
+    result.push((x, y));
     for op in ops.split(',') {
         let (d, num) = op.split_at(1);
         let num = num.parse().unwrap();
@@ -78,7 +100,7 @@ mod tests {
         assert_eq!(
             distance(
                 "R75,D30,R83,U83,L12,D49,R71,U7,L72",
-                "U62,R66,U55,R34,D71,R55,D58,R83"
+                "U62,R66,U55,R34,D71,R55,D58,R83",
             ),
             159
         );
