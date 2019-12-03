@@ -35,18 +35,25 @@ fn part2(input_prog: &[usize]) -> usize {
 }
 
 fn calculate(mut prog: Vec<usize>) -> usize {
-    for i in (0..prog.len()).step_by(4) {
-        let op = prog[i];
-        if op == 99 {
-            break;
-        }
-
-        let a = prog[i + 1];
-        let b = prog[i + 2];
-        let t = prog[i + 3];
+    let mut ip = 0;
+    loop {
+        let op = prog[ip];
         match op {
-            1 => prog[t] = prog[a] + prog[b],
-            2 => prog[t] = prog[a] * prog[b],
+            99 => break,
+            1 => {
+                let a = prog[ip + 1];
+                let b = prog[ip + 2];
+                let t = prog[ip + 3];
+                prog[t] = prog[a] + prog[b];
+                ip += 4;
+            }
+            2 => {
+                let a = prog[ip + 1];
+                let b = prog[ip + 2];
+                let t = prog[ip + 3];
+                prog[t] = prog[a] * prog[b];
+                ip += 4;
+            }
             _ => unimplemented!("Unknown opcode {}", op),
         }
     }
