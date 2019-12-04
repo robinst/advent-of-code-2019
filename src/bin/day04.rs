@@ -1,57 +1,65 @@
 //! https://adventofcode.com/2019/day/4
 
+use std::cmp::Ordering;
+
 fn main() {
     let count = (359282..820401)
-        .filter(|d| check_part1(&format!("{}", d)))
+        .filter(|d| check_part1(&d.to_string()))
         .count();
-
     println!("Part 1: {}", count);
 
     let count = (359282..820401)
-        .filter(|d| check_part2(&format!("{}", d)))
+        .filter(|d| check_part2(&d.to_string()))
         .count();
-
     println!("Part 2: {}", count);
 }
 
 fn check_part1(pw: &str) -> bool {
     let mut previous = 0;
     let mut repeat = 1;
-    let mut doubled = false;
-    for c in pw.chars().map(|c| c.to_digit(10).unwrap()) {
-        if c < previous {
-            return false;
-        } else if c == previous {
-            repeat += 1;
-            if repeat == 2 {
-                doubled = true;
+    let mut double = false;
+    for c in pw.bytes() {
+        match c.cmp(&previous) {
+            Ordering::Less => {
+                return false;
             }
-        } else {
-            repeat = 1;
+            Ordering::Equal => {
+                repeat += 1;
+                if repeat == 2 {
+                    double = true;
+                }
+            }
+            Ordering::Greater => {
+                repeat = 1;
+            }
         }
         previous = c;
     }
-    doubled
+    double
 }
 
 fn check_part2(pw: &str) -> bool {
     let mut previous = 0;
     let mut repeat = 1;
-    let mut doubled = false;
-    for c in pw.chars().map(|c| c.to_digit(10).unwrap()) {
-        if c < previous {
-            return false;
-        } else if c == previous {
-            repeat += 1;
-        } else {
-            if repeat == 2 {
-                doubled = true;
+    let mut double = false;
+    for c in pw.bytes() {
+        match c.cmp(&previous) {
+            Ordering::Less => {
+                return false;
             }
-            repeat = 1;
+            Ordering::Equal => {
+                repeat += 1;
+            }
+            Ordering::Greater => {
+                if repeat == 2 {
+                    double = true;
+                }
+                repeat = 1;
+            }
         }
         previous = c;
     }
-    doubled || repeat == 2
+    double || repeat == 2
 }
 
 #[cfg(test)]
