@@ -2,21 +2,24 @@
 
 fn main() {
     let input = include_str!("../../input/2019/day05.txt");
-    let input_prog: Vec<i32> = input
+    let input_prog = parse(input);
+
+    // 3 wrong, 5346030 right
+    println!("Part 1: {}", calculate(input_prog.clone(), 1));
+    // 1998926 wrong, 513116 right
+    println!("Part 2: {}", calculate(input_prog.clone(), 5));
+}
+
+fn parse(prog: &str) -> Vec<i32> {
+    prog
         .split(',')
         .map(|s| {
             s.trim()
                 .parse()
                 .unwrap_or_else(|_| panic!("Error parsing {:?}", s))
         })
-        .collect();
-
-    // 3 wrong, 5346030 right
-    println!("Part 1: {}", calculate(input_prog.clone(), 1));
-    // 1998926 wrong, 513116 right!
-    println!("Part 2: {}", calculate(input_prog.clone(), 5));
+        .collect()
 }
-
 
 fn calculate(mut prog: Vec<i32>, input: i32) -> i32 {
     let mut ip = 0;
@@ -28,8 +31,9 @@ fn calculate(mut prog: Vec<i32>, input: i32) -> i32 {
         let mode_a = modes % 10;
         modes /= 10;
         let mode_b = modes % 10;
-        modes /= 10;
-        let mode_c = modes % 10;
+        // unused:
+//        modes /= 10;
+//        let mode_c = modes % 10;
         match op {
             99 => break,
             1 => {
@@ -85,8 +89,7 @@ fn calculate(mut prog: Vec<i32>, input: i32) -> i32 {
                 let c = prog[(ip + 3) as usize];
                 let val_a = if mode_a == 0 { prog[a as usize] } else { a };
                 let val_b = if mode_b == 0 { prog[b as usize] } else { b };
-                // immediate here?
-//                let val_c = if mode_c == 0 { prog[c as usize] } else { c };
+                // c is a position, no mode
                 if val_a < val_b {
                     prog[c as usize] = 1;
                 } else {
@@ -100,8 +103,7 @@ fn calculate(mut prog: Vec<i32>, input: i32) -> i32 {
                 let c = prog[(ip + 3) as usize];
                 let val_a = if mode_a == 0 { prog[a as usize] } else { a };
                 let val_b = if mode_b == 0 { prog[b as usize] } else { b };
-                // immediate here?
-//                let val_c = if mode_c == 0 { prog[c as usize] } else { c };
+                // c is a position, no mode
                 if val_a == val_b {
                     prog[c as usize] = 1;
                 } else {
@@ -122,14 +124,10 @@ mod tests {
 
     #[test]
     fn test_examples() {
-        assert!(check("111111"));
-    }
-
-    #[test]
-    fn test_examples_part2() {
-        "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
-1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
-999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99";
-        assert!();
+        let prog = parse(
+            "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99");
+        assert_eq!(calculate(prog.clone(), 7), 999);
+        assert_eq!(calculate(prog.clone(), 8), 1000);
+        assert_eq!(calculate(prog.clone(), 9), 1001);
     }
 }
