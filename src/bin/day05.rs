@@ -11,8 +11,7 @@ fn main() {
 }
 
 fn parse(prog: &str) -> Vec<i32> {
-    prog
-        .split(',')
+    prog.split(',')
         .map(|s| {
             s.trim()
                 .parse()
@@ -32,22 +31,24 @@ fn calculate(mut prog: Vec<i32>, input: i32) -> i32 {
         modes /= 10;
         let mode_b = modes % 10;
         // unused:
-//        modes /= 10;
-//        let mode_c = modes % 10;
+        //        modes /= 10;
+        //        let mode_c = modes % 10;
         match op {
             99 => break,
             1 => {
                 let a = prog[(ip + 1) as usize];
                 let b = prog[(ip + 2) as usize];
                 let t = prog[(ip + 3) as usize];
-                prog[t as usize] = if mode_a == 0 { prog[a as usize] } else { a } + if mode_b == 0 { prog[b as usize] } else { b };
+                prog[t as usize] = if mode_a == 0 { prog[a as usize] } else { a }
+                    + if mode_b == 0 { prog[b as usize] } else { b };
                 ip += 4;
             }
             2 => {
                 let a = prog[(ip + 1) as usize];
                 let b = prog[(ip + 2) as usize];
                 let t = prog[(ip + 3) as usize];
-                prog[t as usize] = if mode_a == 0 { prog[a as usize] } else { a } * if mode_b == 0 { prog[b as usize] } else { b };
+                prog[t as usize] = if mode_a == 0 { prog[a as usize] } else { a }
+                    * if mode_b == 0 { prog[b as usize] } else { b };
                 ip += 4;
             }
             3 => {
@@ -116,7 +117,6 @@ fn calculate(mut prog: Vec<i32>, input: i32) -> i32 {
     }
     output
 }
-
 
 #[cfg(test)]
 mod tests {

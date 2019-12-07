@@ -2,7 +2,10 @@
 
 fn main() {
     let input = include_str!("../../input/2019/day01.txt");
-    let numbers: Vec<u64> = input.lines().map(|line| line.parse().expect(&format!("{:?}", line))).collect();
+    let numbers: Vec<u64> = input
+        .lines()
+        .map(|line| line.parse().expect(&format!("{:?}", line)))
+        .collect();
 
     let sum: u64 = numbers.iter().map(|mass| fuel(*mass)).sum();
     println!("Sum fuel: {}", sum);

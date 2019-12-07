@@ -12,8 +12,7 @@ fn main() {
 }
 
 fn parse(prog: &str) -> Vec<(String, String)> {
-    prog
-        .trim()
+    prog.trim()
         .lines()
         .map(|line| {
             let mut split = line.split(')');
@@ -72,7 +71,6 @@ fn transfers(orbits: &HashMap<String, String>) -> usize {
     0
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -114,5 +112,4 @@ I)SAN
 
         assert_eq!(transfers(&orbits(&parse(s))), 4);
     }
-
 }
