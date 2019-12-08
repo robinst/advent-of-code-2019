@@ -91,26 +91,22 @@ fn score_part1(prog: &str, sequence: Vec<i32>) -> i32 {
 }
 
 fn score_part2(prog: &str, sequence: Vec<i32>) -> i32 {
-    let original_code = Intcode::parse(prog);
-    let mut codes = Vec::new();
+    let prototype = Intcode::parse(prog);
 
+    let mut amps = Vec::new();
     for n in sequence {
-        let mut code = original_code.clone();
-        code.add_input(n);
-        codes.push(code);
+        let mut amp = prototype.clone();
+        amp.add_input(n);
+        amps.push(amp);
     }
 
     let mut signal = 0;
     loop {
-        for code in &mut codes {
-            code.add_input(signal);
-            match code.run() {
-                Result::Output(o) => {
-                    signal = o;
-                }
-                Result::Halt => {
-                    return signal;
-                }
+        for amp in &mut amps {
+            amp.add_input(signal);
+            match amp.run() {
+                Result::Output(o) => signal = o,
+                Result::Halt => return signal,
             }
         }
     }
