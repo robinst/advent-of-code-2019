@@ -44,19 +44,8 @@ fn print_image(input: &str, width: usize, height: usize) {
     image.chunks(width).for_each(|line| {
         let s: String = line
             .iter()
-            .map(|x| if x == &'1' { 'x' } else { ' ' })
+            .map(|x| if x == &'1' { "##" } else { "  " })
             .collect();
-        println!("{:?}", s);
+        println!("{}", s);
     });
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_examples() {
-        let s = "";
-        assert_eq!(0, 0);
-    }
 }
