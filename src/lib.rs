@@ -2,15 +2,15 @@ use std::collections::LinkedList;
 
 #[derive(Clone)]
 pub struct Intcode {
-    prog: Vec<i128>,
-    ip: i128,
-    inputs: LinkedList<i128>,
-    relative_base: i128,
+    prog: Vec<i64>,
+    ip: i64,
+    inputs: LinkedList<i64>,
+    relative_base: i64,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Result {
-    Output(i128),
+    Output(i64),
     Halt,
 }
 
@@ -27,7 +27,7 @@ impl Intcode {
         Self::new(prog)
     }
 
-    pub fn new(prog: Vec<i128>) -> Self {
+    pub fn new(prog: Vec<i64>) -> Self {
         Self {
             prog,
             ip: 0,
@@ -36,12 +36,12 @@ impl Intcode {
         }
     }
 
-    pub fn add_input(&mut self, input: i128) -> &mut Self {
+    pub fn add_input(&mut self, input: i64) -> &mut Self {
         self.inputs.push_back(input);
         self
     }
 
-    pub fn run_last(&mut self) -> i128 {
+    pub fn run_last(&mut self) -> i64 {
         let mut output = 0;
         while let Result::Output(o) = self.run() {
             output = o;
@@ -49,7 +49,7 @@ impl Intcode {
         output
     }
 
-    pub fn run_all(&mut self) -> Vec<i128> {
+    pub fn run_all(&mut self) -> Vec<i64> {
         let mut outputs = Vec::new();
         while let Result::Output(o) = self.run() {
             outputs.push(o);
@@ -152,24 +152,24 @@ impl Intcode {
         Result::Halt
     }
 
-    fn get(&mut self, p: i128) -> i128 {
+    fn get(&mut self, p: i64) -> i64 {
         self.ensure_memory(p);
         self.prog[p as usize]
     }
 
-    fn set(&mut self, p: i128, value: i128) {
+    fn set(&mut self, p: i64, value: i64) {
         self.ensure_memory(p);
         self.prog[p as usize] = value;
     }
 
-    fn ensure_memory(&mut self, p: i128) {
+    fn ensure_memory(&mut self, p: i64) {
         let needed_size = p as usize + 1;
         if needed_size > self.prog.len() {
             self.prog.resize(needed_size, 0);
         }
     }
 
-    fn param(&mut self, p: i128, mode: i128) -> i128 {
+    fn param(&mut self, p: i64, mode: i64) -> i64 {
         let val = self.get(p);
         match mode {
             // position
@@ -182,7 +182,7 @@ impl Intcode {
         }
     }
 
-    fn store(&mut self, p: i128, mode: i128, result: i128) {
+    fn store(&mut self, p: i64, mode: i64, result: i64) {
         let val = self.get(p);
         match mode {
             0 => self.set(val, result),
@@ -227,5 +227,14 @@ mod tests {
 
         let code = Intcode::parse("104,1125899906842624,99");
         assert_eq!(code.clone().run_last(), 1125899906842624);
+    }
+
+    #[test]
+    fn test_day9_input() {
+        let input = include_str!("../input/2019/day09.txt");
+        let code = Intcode::parse(input);
+
+        assert_eq!(code.clone().add_input(1).run_all(), vec![2955820355]);
+        assert_eq!(code.clone().add_input(2).run_all(), vec![46643]);
     }
 }

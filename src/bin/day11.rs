@@ -30,7 +30,7 @@ fn main() {
     }
 }
 
-fn paint(mut code: Intcode, starting_color: i128) -> HashMap<(i32, i32), i128> {
+fn paint(mut code: Intcode, starting_color: i64) -> HashMap<(i32, i32), i64> {
     // 0 = up, then clockwise
     let mut direction = 0;
     let mut x = 0;
@@ -80,6 +80,6 @@ mod tests {
         let input = include_str!("../../input/2019/day11.txt").trim();
         let code = Intcode::parse(input);
 
-        assert_eq!(paint(code, 0).len(), 249);
+        assert_eq!(paint(code, 0).len(), 1964);
     }
 }

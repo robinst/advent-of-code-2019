@@ -9,7 +9,7 @@ fn main() {
     println!("Part 2: {}", largest_part2(input));
 }
 
-fn largest_part1(prog: &str) -> i32 {
+fn largest_part1(prog: &str) -> i64 {
     let mut max = 0;
 
     for a in 0..=4 {
@@ -44,7 +44,7 @@ fn largest_part1(prog: &str) -> i32 {
     max
 }
 
-fn largest_part2(prog: &str) -> i32 {
+fn largest_part2(prog: &str) -> i64 {
     let mut max = 0;
 
     for a in 5..=9 {
@@ -79,7 +79,7 @@ fn largest_part2(prog: &str) -> i32 {
     max
 }
 
-fn score_part1(prog: &str, sequence: Vec<i32>) -> i32 {
+fn score_part1(prog: &str, sequence: Vec<i64>) -> i64 {
     let code = Intcode::parse(prog);
     let mut signal = 0;
     for n in sequence {
@@ -90,7 +90,7 @@ fn score_part1(prog: &str, sequence: Vec<i32>) -> i32 {
     signal
 }
 
-fn score_part2(prog: &str, sequence: Vec<i32>) -> i32 {
+fn score_part2(prog: &str, sequence: Vec<i64>) -> i64 {
     let prototype = Intcode::parse(prog);
 
     let mut amps = Vec::new();

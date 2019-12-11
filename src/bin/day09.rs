@@ -1,4 +1,4 @@
-//! https://adventofcode.com/2019/day/8
+//! https://adventofcode.com/2019/day/9
 
 use advent_of_code_2019::Intcode;
 
