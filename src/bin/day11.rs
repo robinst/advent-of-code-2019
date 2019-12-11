@@ -11,10 +11,11 @@ fn main() {
     println!("Part 1: {:?}", map.len());
 
     let map = paint(code.clone(), 1);
-    let &(start_x, _) = map.keys().min_by_key(|&(x, _y)| x).unwrap();
-    let &(_, start_y) = map.keys().min_by_key(|&(_x, y)| y).unwrap();
-    let &(end_x, _) = map.keys().max_by_key(|&(x, _y)| x).unwrap();
-    let &(_, end_y) = map.keys().max_by_key(|&(_x, y)| y).unwrap();
+    let (start_x, start_y, end_x, end_y) =
+        map.keys()
+            .fold((0, 0, 0, 0), |(start_x, start_y, end_x, end_y), &(x, y)| {
+                (start_x.min(x), start_y.min(y), end_x.max(x), end_y.max(y))
+            });
 
     for y in start_y..=end_y {
         for x in start_x..=end_x {
