@@ -2,7 +2,6 @@
 
 use num::Integer;
 use std::cmp::Ordering;
-use std::collections::HashSet;
 
 fn main() {
     let system = System::new(vec![
