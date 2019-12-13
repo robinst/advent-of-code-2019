@@ -2,7 +2,7 @@ use std::collections::LinkedList;
 
 #[derive(Clone)]
 pub struct Intcode {
-    prog: Vec<i64>,
+    pub prog: Vec<i64>,
     ip: i64,
     inputs: LinkedList<i64>,
     relative_base: i64,
@@ -11,6 +11,7 @@ pub struct Intcode {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Result {
     Output(i64),
+    NeedInput,
     Halt,
 }
 
@@ -88,7 +89,7 @@ impl Intcode {
                     if let Some(input) = self.inputs.pop_front() {
                         self.store(self.ip + 1, mode1, input);
                     } else {
-                        panic!("Expected input but didn't have any");
+                        return Result::NeedInput;
                     }
                     self.ip += 2;
                 }
