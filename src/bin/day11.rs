@@ -47,6 +47,9 @@ fn paint(mut code: Intcode, starting_color: i64) -> HashMap<(i32, i32), i64> {
             Result::Halt => {
                 break;
             }
+            Result::NeedInput => {
+                panic!("Unexpected input needed");
+            }
         }
 
         match code.run() {
@@ -57,6 +60,9 @@ fn paint(mut code: Intcode, starting_color: i64) -> HashMap<(i32, i32), i64> {
             },
             Result::Halt => {
                 break;
+            }
+            Result::NeedInput => {
+                panic!("Unexpected input needed");
             }
         }
 

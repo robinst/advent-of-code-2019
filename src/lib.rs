@@ -58,6 +58,13 @@ impl Intcode {
         outputs
     }
 
+    pub fn run_expect_output(&mut self) -> i64 {
+        match self.run() {
+            Result::Output(o) => o,
+            result => panic!("Expected output, got {:?}", result),
+        }
+    }
+
     pub fn run(&mut self) -> Result {
         loop {
             let instruction = self.get(self.ip);

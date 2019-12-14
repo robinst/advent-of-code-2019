@@ -107,6 +107,7 @@ fn score_part2(prog: &str, sequence: Vec<i64>) -> i64 {
             match amp.run() {
                 Result::Output(o) => signal = o,
                 Result::Halt => return signal,
+                Result::NeedInput => panic!("Unexpected input needed"),
             }
         }
     }
