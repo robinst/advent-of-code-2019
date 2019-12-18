@@ -18,6 +18,7 @@ pub enum Result {
 impl Intcode {
     pub fn parse(instructions: &str) -> Self {
         let prog = instructions
+            .trim()
             .split(',')
             .map(|s| {
                 s.trim()
