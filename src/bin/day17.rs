@@ -60,7 +60,7 @@ fn solve2(mut code: Intcode) -> i64 {
         movements.push(Movement { turn, steps });
     }
 
-    println!("{:?}", movements);
+    dbg!(movements);
 
     // Did this manually, eh :).
     let commands = "A,B,B,A,C,B,C,C,B,A
